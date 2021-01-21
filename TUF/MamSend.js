@@ -39,7 +39,7 @@ const publish = async packet => {
     console.log('Published', packet, '\n');
     var jsonContent = JSON.stringify(mamState);
  
-    fs.writeFile("mam.json", jsonContent, 'utf8', function (err) {
+    fs.writeFile(filepath, jsonContent, 'utf8', function (err) {
         if (err) {
             console.log("An error occured while writing JSON Object to File.");
             return console.log(err);
