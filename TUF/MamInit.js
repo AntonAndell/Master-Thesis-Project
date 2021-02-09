@@ -8,7 +8,7 @@ const fs = require('fs');
 var myArgs = process.argv.slice(2);
 seed = myArgs[0]
 name = myArgs[1]
-console.log(seed, name)
+//console.log(seed, name)
 let mamState = Mam.init(provider, seed);
 //var jsonObj = JSON.parse(mamState);
 var jsonContent = JSON.stringify(mamState);
@@ -19,5 +19,5 @@ fs.writeFile(name,  jsonContent, 'utf8', function (err) {
         return console.log(err);
     }
  
-    console.log("JSON file has been saved.");
+    //console.log("JSON file has been saved.");
 }); 

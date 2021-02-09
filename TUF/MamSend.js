@@ -12,9 +12,9 @@ const publish = async packet => {
     // Create MAM Payload - STRING OF TRYTES
     
     var mamStateJson = fs.readFileSync(filepath, 'utf8');
-    console.log(mamStateJson)
+    //console.log(mamStateJson)
     var mamState = JSON.parse(mamStateJson);
-    console.log(mamState)
+    //console.log(mamState)
     const trytes = asciiToTrytes(packet)
 
     const message = Mam.create(mamState, trytes)
@@ -36,7 +36,7 @@ const publish = async packet => {
       }
       
 
-    console.log('Published', packet, '\n');
+    //console.log('Published', packet, '\n');
     var jsonContent = JSON.stringify(mamState);
  
     fs.writeFile(filepath, jsonContent, 'utf8', function (err) {
@@ -45,7 +45,7 @@ const publish = async packet => {
             return console.log(err);
         }
     
-        console.log("JSON file has been saved.");
+        //console.log("JSON file has been saved.");
     }); 
 }
 
