@@ -84,7 +84,8 @@ subprocess.run(["node", "MamSend.js","Target.json", json.dumps(data)])
 
 data = {
     "Version": "v1.0",
-    "End_Roots": version_roots
+    "End_Roots": version_roots,
+    "Devices": ["win10", "ubuntu", "arch"]
     }
 subprocess.run(["node", "MamSend.js","Snapshot.json", json.dumps(data)]) 
 
@@ -123,7 +124,8 @@ subprocess.run(["node", "MamSend.js","Del_Target1.json", json.dumps(data)])
 
 data = {
     "Version": "v1.2",
-    "End_Roots": version_roots
+    "End_Roots": version_roots,
+    "Devices": ["win10"]
     }
 subprocess.run(["node", "MamSend.js","Snapshot.json", json.dumps(data)]) 
 
@@ -174,7 +176,8 @@ subprocess.run(["node", "MamSend.js","Del_Target2.json", json.dumps(data)])
 ####
 data = {
     "Version": "v2.0",
-    "End_Roots": version_roots
+    "End_Roots": version_roots,
+    "Devices": ["arch", "ubuntu"]
     }
 subprocess.run(["node", "MamSend.js","Snapshot.json", json.dumps(data)]) 
 
@@ -250,7 +253,8 @@ subprocess.run(["node", "MamSend.js","Target2.json", json.dumps(data)])
 ####
 data = {
     "Version": "v3.0",
-    "End_Roots": version_roots
+    "End_Roots": version_roots,
+    "Devices": ["win10"]
     }
 subprocess.run(["node", "MamSend.js","Snapshot.json", json.dumps(data)]) 
 

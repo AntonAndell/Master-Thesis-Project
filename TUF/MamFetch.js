@@ -85,6 +85,71 @@ async function fetchVersionRoots(version, root, end) {
     
     return changes["End_Roots"]
 }
+
+/**
+ * Traverse one single snapshot role and returns its messages from root to end root
+ * @param {Starting root of snapshot to traverse} root 
+ * @param {End root/last root that can be trusted in snapshot} end 
+ * @param {The sequence of Snapshot's Mam messages returned} metadata 
+ */
+async function fetchSnapshotRoots(root, end, metadata = {}) {
+    const result = await Mam.fetchSingle(root, "public")
+    
+    if (typeof result.payload == 'undefined'){
+        console.log(metadata)
+        return metadata
+    }
+
+    snapshotMessage = JSON.parse(trytesToAscii(result.payload))
+    metadata[snapshotMessage['Version']] = snapshotMessage
+
+    if (root == end){
+        console.log("Reached end")
+        console.log(metadata)
+        return metadata
+    }
+    return fetchSnapshotRoots(result.nextRoot, end, metadata)
+}
+
+async function fetchAllSnapshotVersions(root) {
+    var metadata = {}
+    var snap_roots = [];
+
+    const result = await Mam.fetch(root, "public")
+
+    result.messages.forEach(function(message){
+        Roots = JSON.parse(trytesToAscii(message))
+        snap = Roots["Snapshot"]
+        if (typeof snap != 'undefined'){
+            if (snap["Previous"]){
+            snap_roots.push(snap["Previous"]);
+            }
+            snap_roots.push(snap["New"]);
+        }
+    })
+
+    for (let i = 0; i<=snap_roots.length; i=i+2){
+        metadata = await fetchSnapshotRoots(snap_roots[i],snap_roots[i+1], metadata)
+        
+    }
+    console.log(metadata)
+    return metadata
+}
+
+/**
+ * Fetches all snapshot versions available for a specific device
+ * @param {Root role start root} root 
+ * @param {Device type to retrieve versions for e.g 'win10'} device 
+ */
+async function fetchAllSnapshotVersionsForDevice(root, device) {
+    let snapshotVersions = await fetchAllSnapshotVersions(root);
+    let filtered = Object.assign({}, ...
+        Object.entries(snapshotVersions).filter(([k,v]) => v['Devices'].includes(device)).map(([k,v]) => ({[k]:v}))
+    );
+    console.log(filtered)
+    return filtered
+}
+
 async function fetchMetadata(version, root) {
     var Metadata = {};
     var target_roots = [];
@@ -128,7 +193,6 @@ async function fetchMetadata(version, root) {
             break
         }
 
-        
     }
     console.log("full", Metadata)
     return
@@ -170,5 +234,7 @@ function join(Metadata, changes){
 
 
 // Callback used to pass data out of the fetch
-fetchMetadata("v2.0","ILXGXKQOYKFLIGZLFCFJKKXYD9IXPYXESVYEDKHFCUVFSMJRRZVFWTWNZKQKJXOKLSJRAXAARLDGEBXZP")
+//fetchMetadata("v2.0","ILXGXKQOYKFLIGZLFCFJKKXYD9IXPYXESVYEDKHFCUVFSMJRRZVFWTWNZKQKJXOKLSJRAXAARLDGEBXZP")
+//fetchSnapshotRoots("U9JKVJAXKIQPHNBI9EXI9MPQPQGIDEHYDZKRMEIKQHSJBJASPFF9GKHPNPEQNA9GQVFVIDXLOLQTYZYUD", "")
+fetchAllSnapshotVersionsForDevice("WZ9RHFPVVG9GYEMXECJ9VPQYNSQFFDTUGXDYDWUKGTDZKJOYSYCXWHCSXWCNLZP9DS9OGGPZLDRKATPVM", "win10")
 //syncTarget("UXIVVSKXIRAHWATWRJRZNQYT9PVAFSARD9WRTL9TAXKLVLACVNCCWDDAKCZJLZGVBSIGGA9ZPQMPFBOLX","IZXNNDWMOUBKTXXTHGODUPDMRFGGIW9SDTWYINJCKD9U9NROUFECHMTUQJUBTL9HEJUUFEGVOZ9WWN9AF")
