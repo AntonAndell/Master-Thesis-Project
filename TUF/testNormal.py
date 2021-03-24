@@ -59,47 +59,18 @@ subprocess.run(["node", "MamSend.js","Root.json", json.dumps(data)])
 
 write_file("Test-Project/file1.txt", "testfile 1")
 write_file("Test-Project/file2.txt", "testfile 2")
-write_file("Test-Project/fileT1.txt", "Ttestfile 1")
-write_file("Test-Project/fileT2.txt", "Ttestfile 2")
-write_file("Test-Project/fileT3.txt", "Ttestfile 3")
-write_file("Test-Project/fileT4.txt", "Ttestfile 4")
-write_file("Test-Project/fileT5.txt", "Ttestfile 5")
 write_file("Test-Project/TestDir/file3.txt", "testfile 3")
 
 #init
 data = {
     "file1": get_hash("Test-Project/file1.txt"),
     "file2": get_hash("Test-Project/file2.txt"),
-    "fileT1": get_hash("Test-Project/fileT1.txt"),
-    "fileT2": get_hash("Test-Project/fileT2.txt"),
-    "fileT3": get_hash("Test-Project/fileT3.txt"),
-    "fileT4": get_hash("Test-Project/fileT4.txt"),
-    "fileT5": get_hash("Test-Project/fileT5.txt"),
     "TestDir/file3.txt": get_hash("Test-Project/TestDir/file3.txt"),
     "Delegations":{}
     }
 
 subprocess.run(["node", "MamSend.js","Target.json", json.dumps(data)]) 
-#######
 
-
-write_file("Test-Project/fileT1.txt", "Ttestfile 1+")
-write_file("Test-Project/fileT2.txt", "Ttestfile 2+")
-write_file("Test-Project/fileT3.txt", "Ttestfile 3+")
-write_file("Test-Project/fileT4.txt", "Ttestfile 4+")
-write_file("Test-Project/fileT5.txt", "Ttestfile 5+")
-
-#init
-data = {
-    "fileT1": get_hash("Test-Project/fileT1.txt"),
-    "fileT2": get_hash("Test-Project/fileT2.txt"),
-    "fileT3": get_hash("Test-Project/fileT3.txt"),
-    "fileT4": get_hash("Test-Project/fileT4.txt"),
-    "fileT5": get_hash("Test-Project/fileT5.txt"),
-    "Delegations":{}
-    }
-
-subprocess.run(["node", "MamSend.js","Target.json", json.dumps(data)]) 
 #######################
 
 version_roots = [get_next_root("Target.json")]
@@ -141,14 +112,9 @@ version_roots = [get_next_root("Target.json"),get_root("Del_Target1.txt")]
 
 write_file("Test-Project/TestDir/file3.txt", "testfile 3 delegated")
 write_file("Test-Project/TestDir/file5.txt", "testfile 5 creatated and delegated")
-write_file("Test-Project/TestDir/fileT1.txt", "testfile T1")
-write_file("Test-Project/TestDir/fileT2.txt", "testfile T2")
-
 data = {
     "TestDir/file3.txt": get_hash("Test-Project/TestDir/file3.txt"),
     "TestDir/file5.txt": get_hash("Test-Project/TestDir/file5.txt"),
-    "TestDir/fileT1.txt": get_hash("Test-Project/TestDir/fileT1.txt"),
-    "TestDir/fileT1.txt": get_hash("Test-Project/TestDir/fileT1.txt"),
     "Delegations":{}
    
 }
@@ -171,6 +137,7 @@ subprocess.run(["node", "MamSend.js","Target.json", json.dumps(data)])
 ####
 
 version_roots = [get_next_root("Target.json"),get_root("Del_Target1.txt"), get_root("Del_Target2.txt")]
+last_good_Target_root = get_next_root("Target.json")
 write_file("Test-Project/file1.txt", "testfile 1 next del")
 data = {
     "file1": get_hash("Test-Project/file1.txt"),
@@ -280,145 +247,7 @@ data = {
 subprocess.run(["node", "MamSend.js","Snapshot.json", json.dumps(data)]) 
 
 ##############
-################
-
-write_file("Test-Project/DelDir/fileT1.txt", "testfile T1 edit1")
-
-data = {
-    "DelDir/fileT1.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target2.json", json.dumps(data)]) 
-################
-
-write_file("Test-Project/DelDir/fileT1.txt", "testfile T1 edit2")
-write_file("Test-Project/DelDir/fileT2.txt", "testfile T2 edit1")
-write_file("Test-Project/DelDir/fileT3.txt", "testfile T3 edit1")
-write_file("Test-Project/DelDir/fileT4.txt", "testfile T4 edit1")
-
-
-data = {
-    "DelDir/fileT1.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "DelDir/fileT2.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "DelDir/fileT3.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "DelDir/fileT4.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target2.json", json.dumps(data)]) 
-
-
-#########################
-
-write_file("Test-Project/DelDir/fileT3.txt", "testfile T3 edit2")
-write_file("Test-Project/DelDir/fileT4.txt", "testfile T4 edit2")
-
-
-data = {
-  
-    "DelDir/fileT3.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "DelDir/fileT4.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target2.json", json.dumps(data)]) 
-
-
-############################################
-
-write_file("Test-Project/DelDir/fileT1.txt", "testfile T1 edit1")
-
-data = {
-    "DelDir/fileT1.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target2.json", json.dumps(data)]) 
-#####################
-
-write_file("Test-Project/TestDir/file3.txt", "testfile 3 new")
-write_file("Test-Project/TestDir/file5.txt", "testfile 5 new")
-data = {
-    "TestDir/file3.txt": get_hash("Test-Project/TestDir/file3.txt"),
-    "TestDir/file5.txt": get_hash("Test-Project/TestDir/file5.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target1.json", json.dumps(data)]) 
-
-
-
-write_file("Test-Project/TestDir/file10.txt", "testfile 10 new")
-write_file("Test-Project/TestDir/file11.txt", "testfile 11 new")
-write_file("Test-Project/TestDir/file12.txt", "testfile 12 new")
-data = {
-    "TestDir/file10.txt": get_hash("Test-Project/TestDir/file10.txt"),
-    "TestDir/file11.txt": get_hash("Test-Project/TestDir/file11.txt"),
-    "TestDir/file12.txt": get_hash("Test-Project/TestDir/file11.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target1.json", json.dumps(data)]) 
-
-
-######
-version_roots = [get_next_root("Target.json"),get_next_root("Del_Target1.json"), get_next_root("Del_Target2.json")]
-
 ########
-
-
-write_file("Test-Project/TestDir/file3.txt", "testfile 3 final edited")
-write_file("Test-Project/TestDir/file5.txt", "testfile 5 final edited")
-data = {
-    "TestDir/file3.txt": get_hash("Test-Project/TestDir/file3.txt"),
-    "TestDir/file5.txt": get_hash("Test-Project/TestDir/file5.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target1.json", json.dumps(data)]) 
-
-
-
-###################
-
-
-write_file("Test-Project/fileT1.txt", "Ttestfile 1+++")
-write_file("Test-Project/fileT2.txt", "Ttestfile 2+++")
-write_file("Test-Project/fileT5.txt", "Ttestfile 5+++")
-
-#init
-data = {
-    "fileT1": get_hash("Test-Project/fileT1.txt"),
-    "fileT2": get_hash("Test-Project/fileT2.txt"),
-    "fileT5": get_hash("Test-Project/fileT5.txt"),
-    "Delegations":{}
-    }
-
-subprocess.run(["node", "MamSend.js","Target.json", json.dumps(data)]) 
-#######################
-
-
-write_file("Test-Project/DelDir/fileT1.txt", "testfile T1 Final edit")
-
-
-
-data = {
-    "DelDir/fileT1.txt": get_hash("Test-Project/DelDir/fileT1.txt"),
-    "Delegations":{}
-   
-}
-subprocess.run(["node", "MamSend.js","Del_Target2.json", json.dumps(data)]) 
-
-#######
-
-
-
-data = {
-    "Version": "v4.0",
-    "End_Roots": version_roots
-    }
-subprocess.run(["node", "MamSend.js","Snapshot.json", json.dumps(data)]) 
 
 """
 time.sleep(3)

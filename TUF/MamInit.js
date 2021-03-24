@@ -1,5 +1,5 @@
 const Mam = require('@iota/mam');
-const provider = 'https://nodes.devnet.iota.org';
+const provider = 'https://nodes.thetangle.org:443'
 // file system module to perform file operations
 const fs = require('fs');
  

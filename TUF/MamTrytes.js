@@ -4,7 +4,7 @@ var fs = require('fs');
  
 
 const mode = 'public'
-const provider = 'https://nodes.devnet.iota.org'
+const provider = 'https://nodes.thetangle.org:443'
 let mamState = Mam.init(provider);
 var myArgs = process.argv.slice(2);
 

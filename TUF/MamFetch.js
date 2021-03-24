@@ -6,12 +6,12 @@ const { start } = require('repl');
  
 
 const mode = 'public'
-const provider = 'https://nodes.devnet.iota.org'
+const provider = 'https://nodes.thetangle.org:443'
 let mamState = Mam.init(provider);
 var myArgs = process.argv.slice(2);
 Root = myArgs[0]
 version_name = myArgs[1]
-console.log(version_name, Root)
+//console.log(version_name, Root)
 
 async function fetchTarget(start_root, end_root, target_roots, Metadata) {
     current_root = ""
@@ -23,7 +23,7 @@ async function fetchTarget(start_root, end_root, target_roots, Metadata) {
  
         const result = await Mam.fetchSingle(next_root, "public")
         if (typeof result.payload == 'undefined'){
-            console.log("here end of rooit")
+            //console.log("here end of rooit")
             return {}
         }
         current_root = next_root
@@ -33,7 +33,7 @@ async function fetchTarget(start_root, end_root, target_roots, Metadata) {
         join(Metadata,changes)
 
     }
-    console.log(Metadata["Delegations"])
+    //console.log(Metadata["Delegations"])
     target_roots.splice(target_roots.indexOf(current_root), 1)
     for (let i = 0; i < Object.keys(Metadata["Delegations"]).length; i++){
         DelData = {"Delegations":{}}
@@ -66,7 +66,7 @@ async function fetchVersionRoots(version, root, end) {
     next_root = root
   
     while (current_version != version) {
-        console.log(current_version)
+        //console.log(current_version)
         //console.log(next_root)
         if (current_root == end){
             console.log("here")
@@ -89,7 +89,7 @@ async function fetchMetadata(version, root) {
     var Metadata = {};
     var target_roots = [];
     var snap_roots = [];
-
+    console.time('someFunction')
     const result = await Mam.fetch(root, "public")
 
     result.messages.forEach(function(message){
@@ -118,19 +118,21 @@ async function fetchMetadata(version, root) {
             break
         }
     }
-    console.log(end_roots)
+    //console.log(end_roots)
     Metadata= {"Delegations":{}}
     for (let i = 0; i<target_roots.length; i=i+2){
-        console.log("pre", end_roots)
+        //console.log("pre", end_roots)
         Metadata = await fetchTarget(target_roots[i], target_roots[i+1], end_roots, Metadata)
-        console.log("post", end_roots)
+        //console.log("post", end_roots)
         if (end_roots.length <= 0){
             break
         }
 
         
     }
-    console.log("full", Metadata)
+    //
+    console.timeEnd('someFunction')
+    //console.log("full", Metadata)
     return
 
 
@@ -170,5 +172,8 @@ function join(Metadata, changes){
 
 
 // Callback used to pass data out of the fetch
-fetchMetadata("v2.0","ILXGXKQOYKFLIGZLFCFJKKXYD9IXPYXESVYEDKHFCUVFSMJRRZVFWTWNZKQKJXOKLSJRAXAARLDGEBXZP")
+
+fetchMetadata("v3.0","ITJEL9HA9PPTHBDJNPLWQVVGBETMTDOBUBEAOR9ALKSLDSHAAMZTL9RWWONEOJEVZMKCQ9PUWOVTBVFEG")
+
+
 //syncTarget("UXIVVSKXIRAHWATWRJRZNQYT9PVAFSARD9WRTL9TAXKLVLACVNCCWDDAKCZJLZGVBSIGGA9ZPQMPFBOLX","IZXNNDWMOUBKTXXTHGODUPDMRFGGIW9SDTWYINJCKD9U9NROUFECHMTUQJUBTL9HEJUUFEGVOZ9WWN9AF")

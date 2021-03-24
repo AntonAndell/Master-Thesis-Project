@@ -23,7 +23,7 @@ print(yTUF)
 xTUFT =list(range(1,31))  
 # corresponding y axis values 
 yTUFT = np.array([1588.726786660369]*30)*np.array(xTUFT)/1000
-
+plt.rcParams.update({'font.size': 22})
 plt.plot(xTUFT, yTUFT, label="TUFT")
 
 

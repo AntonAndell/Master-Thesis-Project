@@ -13,7 +13,7 @@ var g = graphviz.digraph("G");
 // Generate a PNG output
 
 const mode = 'public'
-const provider = 'https://nodes.devnet.iota.org'
+const provider = 'https://nodes.thetangle.org:443'
 let mamState = Mam.init(provider);
 var myArgs = process.argv.slice(2);
 
@@ -38,11 +38,11 @@ function fetchTarget(root) {
         //console.log(changes)
         Object.keys(changes).forEach(key => Metadata[key] = changes[key])
         delete changes["Delegations"]
-        Object.keys(changes).forEach(key => data = data + key +":"+  "<Attrs>"+"\n")
+        Object.keys(changes).forEach(key => data = data + key +":"+  "<Attrs>"+"\\n")
         //console.log(Object.keys(Metadata["Delegations"]))
         Object.keys(Metadata["Delegations"]).forEach(key => {
             data = data + key +":"+  "<Root>"+"\n"
-            g.addEdge(root, Metadata["Delegations"][key]["New"]);
+            g.addEdge(root, Metadata["Delegations"][key]["New"],{"label":"Deleg","style":"dashed"});
             fetchTarget(Metadata["Delegations"][key]["New"])    
                         
         });
@@ -71,7 +71,7 @@ function fetchSnapshot(root) {
         current_node.set("label", changes["Version"])
         //console.log("snapping1")
         changes["End_Roots"].forEach(endRoot => {
-            g.addEdge( root, endRoot);
+            g.addEdge( root, endRoot,{"style":"dashed"});
         });
        
         
@@ -88,6 +88,7 @@ function fetchMetadata(root) {
     return Mam.fetchSingle(root, "public").then(result => {
   
         if (typeof result.payload == 'undefined'){
+            RootRoot.set("label", "Next Root")
             return
         }
         next_root = result.nextRoot
@@ -101,14 +102,14 @@ function fetchMetadata(root) {
                 g.addEdge( RootRoot, snap["Previous"]);
             }
             fetchSnapshot(snap["New"])
-            g.addEdge( RootRoot, snap["New"]);
+            g.addEdge( RootRoot, snap["New"], {"label":"Snapshot", "style":"dashed"});
         }
         if (typeof target != 'undefined'){
             if (target["Previous"]){
-                g.addEdge( target["Previous"],RootRoot);
+                g.addEdge( RootRoot,target["Previous"], {"style":"dashed", "color":"red"});
             }
             fetchTarget(target["New"])
-            g.addEdge( RootRoot, target["New"]);
+            g.addEdge( RootRoot, target["New"],{"label":"Target","style":"dashed"});
         }
         
         return fetchMetadata(next_root)
@@ -125,11 +126,13 @@ function sleep(ms) {
   
 
 async function main (){
-    a = await fetchMetadata("ILXGXKQOYKFLIGZLFCFJKKXYD9IXPYXESVYEDKHFCUVFSMJRRZVFWTWNZKQKJXOKLSJRAXAARLDGEBXZP")
-   
-    await sleep(6000)
+    //a = await fetchMetadata("VIZUNLHWQRCH9LNMBIHKEJQLSWKCKEAOUCNACI9TTRBZJNQMOCN99VVFXSNARCAIJKOKXIMEMJITQCJDV") LArge
+   // a = await fetchMetadata("ITJEL9HA9PPTHBDJNPLWQVVGBETMTDOBUBEAOR9ALKSLDSHAAMZTL9RWWONEOJEVZMKCQ9PUWOVTBVFEG") comp
+    a = await fetchMetadata("DJDVFKGQMZREICLVSIYPGJPUOQFDRJEZSREPXUQYBARYABU9PTNBNJGKOWNSVXBUSPIDUXBNMNTOTULFT") 
+    
+    await sleep(10000)
     console.log( g.to_dot() , a);
-    a = g.output( "png", "test011.png" );
+    a = g.output( "png", "testNormal.png" );
 
     console.log("exported",a)
 }

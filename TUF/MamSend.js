@@ -4,7 +4,7 @@ var fs = require('fs');
  
 
 const mode = 'public'
-const provider = 'https://nodes.devnet.iota.org'
+const provider = 'https://nodes.thetangle.org:443'
 let mamState = Mam.init(provider);
 var myArgs = process.argv.slice(2);
 const filepath = myArgs[0]
@@ -27,7 +27,9 @@ const publish = async packet => {
     console.log("Attached")
     console.log(message.root)
     try {
-        await Mam.attach(message.payload, message.address, 3, 9);
+        console.time('someFunction')
+        await Mam.attach(message.payload, message.address, 3, 14);
+        console.timeEnd('someFunction')
       } catch (error) {
         console.error(error);
         return

@@ -2,24 +2,21 @@
 const Mam = require('@iota/mam')
 const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
 var fs = require('fs');
+const { start } = require('repl');
  
 
 const mode = 'public'
 const provider = 'https://nodes.thetangle.org:443'
+let mamState = Mam.init(provider);
+var myArgs = process.argv.slice(2);
 
 
-async function createMamState(seed) {
-    let mamState = Mam.init(provider, seed);
-    root = Mam.getRoot(mamState)
-    const result = await Mam.fetch(root, "public")
-    mamState.channel.next_root = result.nextRoot
-    mamState.channel.start = result.messages.length
-    console.log(mamState)
-
-}
-
-
+async function fetch(root) {
+    console.time('someFunction')
+    Mam.fetchSingle(root, "public").then(() => console.timeEnd('someFunction') )
+}        
+   
 
 // Callback used to pass data out of the fetch
-createMamState("SPIGHELMBVPOYR9YNGDRUDXKSJBQOUXIOISITEODXCYAKOTDAWWZS9BMVVKGFZSKJNLJQOCTPKPCGNTUA")
+fetch("BGGYBJY9DYXXVZWLDAQIZHI9UUZLVKUPGIBKSCMATPP9OSAVFOXGQN9TBFOHUAQRPABRQTEWGFXK9CQYJ")
 //syncTarget("UXIVVSKXIRAHWATWRJRZNQYT9PVAFSARD9WRTL9TAXKLVLACVNCCWDDAKCZJLZGVBSIGGA9ZPQMPFBOLX","IZXNNDWMOUBKTXXTHGODUPDMRFGGIW9SDTWYINJCKD9U9NROUFECHMTUQJUBTL9HEJUUFEGVOZ9WWN9AF")
